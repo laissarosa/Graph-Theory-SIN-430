@@ -5,14 +5,6 @@ Classe GraphSearch: todas as buscas e algoritmos construídos sobre elas
 (BFS, DFS, Dijkstra, componentes conexas, distância e diâmetro). Recebe um
 Graph e usa apenas a sua interface pública, então funciona com qualquer
 representação.
-
-O Dijkstra é uma busca de melhor-primeiro (a BFS é o caso de pesos iguais a 1).
-Ele é escrito uma única vez, em dijkstra(). O que muda entre as duas
-versões é só como as estimativas de distância são guardadas e o mínimo é
-extraído, e isso é isolado em dois pares de métodos privados:
-    vetor: _vector_pop   (varredura linear)         -> O(n^2 + m)
-    heap : _heap_pop / _heap_decrease (heap binário
-           com vetor de posições, decrease-key)     -> O((n + m) log n)
 """
 
 from collections import deque
