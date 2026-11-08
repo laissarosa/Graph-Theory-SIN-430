@@ -81,7 +81,18 @@ class Graph(ABC):
             raise ValueError(f"Vértice {v} fora do intervalo [1, {self.num_vertices}].")
 
     def _register_weight(self, weight: Optional[float]) -> float:
-        """Valida o peso, atualiza is_weighted/has_negative_weight e o devolve."""
+        """
+        Valida o peso, atualiza is_weighted/has_negative_weight e o devolve.
+
+        O grafo é todo com pesos ou todo sem pesos: a primeira aresta define
+        o formato, e misturar os dois levanta ValueError. Em grafos sem
+        pesos, cada aresta vale 1.0.
+        """
+        if self.num_edges > 0:
+            if weight is None and self.is_weighted:
+                raise ValueError("Aresta sem peso em um grafo com pesos.")
+            if weight is not None and not self.is_weighted:
+                raise ValueError("Aresta com peso em um grafo sem pesos.")
         if weight is None:
             return 1.0
         weight = float(weight)
@@ -92,7 +103,7 @@ class Graph(ABC):
             self.has_negative_weight = True
         return weight
 
-    # ---- Construtor alternativo ----
+
 
     @classmethod
     def from_file(cls, filepath: str) -> "Graph":
@@ -116,6 +127,7 @@ class Graph(ABC):
 
             graph = cls(num_vertices)
             self_loops = 0
+            tem_peso = None
 
             for line_num, line in enumerate(lines, start=2):
                 parts = line.split()

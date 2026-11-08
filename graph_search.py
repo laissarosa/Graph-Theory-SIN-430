@@ -16,6 +16,7 @@ extraído, e isso é isolado em dois pares de métodos privados:
 """
 
 from collections import deque
+from tracemalloc import start
 from typing import Dict, List, Optional, Set, Tuple
 
 from graph import Graph
@@ -56,25 +57,22 @@ class GraphSearch:
         """Busca em profundidade iterativa (evita o limite de recursão do Python)."""
         g = self._graph
         g.check_vertex(start)
-        parent: Dict[int, Optional[int]] = {start: None}
-        level: Dict[int, int] = {start: 0}
-        visited: Set[int] = set()
-        stack = [start]
+        parent: Dict[int, Optional[int]] = {}
+        level: Dict[int, int] = {}
+        stack = [(start, None)]  
 
         while stack:
-            u = stack.pop()
-            if u in visited:
+            u, pai = stack.pop()
+            if u in parent: 
                 continue
-            visited.add(u)
+            parent[u] = pai 
+            level[u] = 0 if pai is None else level[pai] + 1
             for w in g.neighbors(u):
                 if w not in parent:
-                    parent[w] = u
-                    level[w] = level[u] + 1
-                if w not in visited:
-                    stack.append(w)
+                    stack.append((w, u))
 
         return {"parent": parent, "level": level}
-
+    
     # ---- Algoritmos construídos sobre a BFS ----
 
     def connected_components(self) -> List[List[int]]:
@@ -128,7 +126,7 @@ class GraphSearch:
             )
 
         n = g.num_vertices
-        dist: List[float] = [self.INF] * (n + 1)  # índice 0 não é usado
+        dist: List[float] = [self.INF] * (n + 1)  
         parent: List[Optional[int]] = [None] * (n + 1)
 
         if use_heap:
@@ -183,19 +181,18 @@ class GraphSearch:
         for v in range(1, len(dist)):
             if not done[v] and dist[v] < melhor:
                 melhor, u = dist[v], v
-        if u == -1:  # os restantes são inalcançáveis
+        if u == -1:  
             return None
         done[u] = True
         return u, melhor
 
     # ---- Dijkstra com heap: heap binário com decrease-key ----
     # heap guarda vértices; pos[v] é a posição de v no heap (-1 se ausente).
-    # Com pos, diminuir a chave de v custa O(log n), sem entradas repetidas.
 
     @staticmethod
     def _heap_decrease(dist: List[float], heap: List[int], pos: List[int], v: int, new_dist: float) -> None:
         dist[v] = new_dist
-        if pos[v] == -1:  # ainda não está no heap: insere no fim
+        if pos[v] == -1:  
             heap.append(v)
             pos[v] = len(heap) - 1
         GraphSearch._sift_up(dist, heap, pos, pos[v])

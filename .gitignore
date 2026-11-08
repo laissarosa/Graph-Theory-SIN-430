@@ -2,8 +2,11 @@
 *.txt
 
 # Documentação
-descrição_trabalho_P2.pdf
+trabalho_P2.pdf
 
 # arquivos 
 /relatorio/
 /__pycache__/
+
+Estudos.md
+case_study.py
