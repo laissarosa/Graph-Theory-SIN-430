@@ -19,7 +19,7 @@ class Graph(ABC):
     """
     Vértices numerados de 1 a num_vertices, como no arquivo de entrada.
 
-    is_weighted         -> True se alguma aresta foi inserida com peso explícito.
+    is_weighted         -> True se alguma aresta foi inserida com peso.
     has_negative_weight -> True se alguma aresta tem peso negativo.
     """
 
@@ -31,29 +31,26 @@ class Graph(ABC):
         self.is_weighted = False
         self.has_negative_weight = False
 
-    # ---- Interface das representações concretas ----
+    # representações implementada pelas subclasses
 
     @abstractmethod
     def _get_weight(self, u: int, v: int) -> Optional[float]:
-        """Peso da aresta {u, v}, ou None se ela não existe."""
         raise NotImplementedError
 
     @abstractmethod
     def _set_weight(self, u: int, v: int, weight: float) -> None:
-        """Grava a aresta {u, v} com o peso dado (cria ou substitui)."""
         raise NotImplementedError
 
     @abstractmethod
     def neighbors(self, v: int) -> List[int]:
-        """Vizinhos do vértice v."""
         raise NotImplementedError
 
     @abstractmethod
     def weighted_neighbors(self, v: int) -> List[Tuple[int, float]]:
-        """Pares (vizinho, peso da aresta) do vértice v."""
+        # Pares (vizinho, peso da aresta) do vértice v
         raise NotImplementedError
 
-    # ---- Inserção de arestas (regra única para todas as representações) ----
+    # regra única de inserção de arestas para todas as representações
 
     def add_edge(self, u: int, v: int, weight: Optional[float] = None) -> None:
         """
@@ -113,8 +110,7 @@ class Graph(ABC):
 
         Formato: linha 1 = número de vértices; demais linhas = "u v" ou
         "u v peso" (peso: ponto flutuante qualquer). Laços são ignorados.
-        Se a mesma aresta aparece mais de uma vez, vale o menor peso
-        (aresta sem peso conta como 1.0).
+        Se a mesma aresta aparece mais de uma vez, vale o menor peso.
         """
         with open(filepath, "r", encoding="utf-8") as f:
             raw_lines = (line.strip() for line in f)
@@ -127,7 +123,6 @@ class Graph(ABC):
 
             graph = cls(num_vertices)
             self_loops = 0
-            tem_peso = None
 
             for line_num, line in enumerate(lines, start=2):
                 parts = line.split()

@@ -54,7 +54,6 @@ class GraphSearch:
         return {"parent": parent, "level": level}
 
     def dfs(self, start: int) -> Dict:
-        """Busca em profundidade iterativa (evita o limite de recursão do Python)."""
         g = self._graph
         g.check_vertex(start)
         parent: Dict[int, Optional[int]] = {}

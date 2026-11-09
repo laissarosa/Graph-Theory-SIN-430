@@ -4,8 +4,7 @@ statistics_report.py
 Cálculo e escrita das estatísticas de um grafo (graus, pesos, componentes
 conexas), além da escrita em arquivo dos resultados de consultas pontuais
 (distância, diâmetro, caminho mínimo), dos tempos de execução e da árvore de
-busca. Não se chama statistics.py para não colidir com o módulo da biblioteca
-padrão, usado aqui para a mediana.
+busca.
 """
 
 from statistics import median
@@ -105,7 +104,6 @@ class GraphStatistics:
         return "\n".join(lines)
 
     def write_to_file(self, filepath: str) -> None:
-        """Cria (ou sobrescreve) o arquivo de saída com as estatísticas."""
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(self.as_text())
 

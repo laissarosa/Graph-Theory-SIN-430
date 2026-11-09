@@ -17,7 +17,6 @@ class AdjacencyListGraph(Graph):
 
     def __init__(self, num_vertices: int):
         super().__init__(num_vertices)
-        # Índice 0 não é usado: vértices vão de 1 a num_vertices.
         self._adj: List[Dict[int, float]] = [dict() for _ in range(num_vertices + 1)]
 
     def _get_weight(self, u: int, v: int) -> Optional[float]:

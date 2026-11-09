@@ -3,6 +3,7 @@
 
 # Documentação
 trabalho_P2.pdf
+*.pdf
 
 # arquivos 
 /relatorio/
@@ -10,3 +11,4 @@ trabalho_P2.pdf
 
 Estudos.md
 case_study.py
+estudo_caso.py
